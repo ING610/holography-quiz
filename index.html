@@ -84,12 +84,12 @@
       </div>
     </div>
     <div class="formula-badge">
-      <span>Δx = Δp · k / M</span>
+      <span>Δx = Δp · k / λ</span>
     </div>
     <div class="key-info">
       <div><i class="fas fa-laser"></i> 632.8nm 氦氖激光器</div>
       <div><i class="fas fa-camera"></i> k = 3.45 μm</div>
-      <div><i class="fas fa-expand"></i> M ≈ 1</div>
+      <div><i class="fas fa-expand"></i> λ ≈ 1</div>
     </div>
     <div class="score-panel">
       <div class="score-text"><i class="fas fa-star" style="margin-right: 6px;"></i>当前得分</div>
@@ -135,7 +135,7 @@
       </div>
     </div>
     <div class="quick-questions">
-      <span class="quick-btn" data-question="Δx=Δp×k/M 公式怎么理解？">📐 公式详解</span>
+      <span class="quick-btn" data-question="Δx=Δp×k/λ 公式怎么理解？">📐 公式详解</span>
       <span class="quick-btn" data-question="实验光路中有哪些元件？">🔭 光路元件</span>
       <span class="quick-btn" data-question="主要误差来源有哪些？">⚠️ 误差分析</span>
       <span class="quick-btn" data-question="数字全息有什么优势？">✨ 技术优势</span>
@@ -160,7 +160,7 @@
       { text: "可变光阑在光路中起到的主要作用是什么？", options: ["A. 调节光束直径", "B. 截掉边缘杂散光，保证光斑纯净", "C. 改变光束偏振方向", "D. 聚焦光束到样品上"], answer: 1, explanation: "台词：可变光阑是“光路清洁工”，截掉边缘杂散光。" },
       { text: "样品被固定在一个什么装置上，以保证横向平移？", options: ["A. 电动旋转台", "B. 高精度手动平移台", "C. 三维纳米定位台", "D. 压电陶瓷驱动器"], answer: 1, explanation: "台词：样品被固定在一个高精度的手动平移台上。" },
       { text: "实验所用相机的像元物理尺寸 k 是多少？", options: ["A. 2.5 μm", "B. 3.45 μm", "C. 5.0 μm", "D. 1.0 μm"], answer: 1, explanation: "台词：像元尺寸小至3.45微米。" },
-      { text: "关于位移计算公式 Δx = Δp × k / M，下列说法正确的是？", options: ["A. Δp 是样品实际移动距离", "B. M 代表系统放大率，通常约等于1", "C. k 是激光波长", "D. 该公式基于光的干涉原理"], answer: 1, explanation: "Δx实际位移，Δp像素位移，M为系统放大率≈1。" },
+      { text: "关于位移计算公式 Δx = Δp × k / λ，下列说法正确的是？", options: ["A. Δp 是样品实际移动距离", "B. λ 代表系统放大率，通常约等于1", "C. k 是激光波长", "D. 该公式基于光的干涉原理"], answer: 1, explanation: "Δx实际位移，Δp像素位移，λ为系统放大率≈1。" },
       { text: "实验操作中，样品移动前拍摄的第一张图是什么？", options: ["A. 背景图", "B. 样品在原点位置的全息图", "C. 参考光斑图", "D. 暗场噪声图"], answer: 0, explanation: "第三步：在样品移动前，我们先拍摄一张背景图。" },
       { text: "视频中提到的实验第一步操作是什么？", options: ["A. 固定所有元件", "B. 调整光路，让两片透镜焦点重合", "C. 拍摄第一张全息图", "D. 操作平移台移动样品"], answer: 1, explanation: "第一步：调整光路，让两片透镜的焦点重合，得到平行光。" },
       { text: "该测量技术最终将微小的实际位移转化为什么？", options: ["A. 电压变化量", "B. 图像上像素点的移动", "C. 光强度的变化", "D. 干涉条纹的间距"], answer: 1, explanation: "台词：复杂的物理测量，最终转化为了我们在图像上数像素点的游戏！" }
@@ -171,7 +171,6 @@
     let currentScore = 0;
     const questionCardRefs = [];
 
-    // 渲染题目
     function renderQuestions() {
       if (!container) return;
       let html = '';
@@ -196,13 +195,11 @@
       });
       container.innerHTML = html;
 
-      // 绑定点击事件：点击整个option区域都能选中radio
       document.querySelectorAll('.option').forEach(optDiv => {
         optDiv.addEventListener('click', function(e) {
           const radio = this.querySelector('input[type="radio"]');
           if (radio) {
             radio.checked = true;
-            // 触发change事件以便清除旧反馈
             radio.dispatchEvent(new Event('change', { bubbles: true }));
           }
         });
@@ -216,7 +213,6 @@
       }
     }
 
-    // 显示得分提示
     function showScoreToast(message, isSuccess = true) {
       const existingToast = document.getElementById('scoreToast');
       if (existingToast) existingToast.remove();
@@ -281,7 +277,6 @@
       currentScore = totalScore;
       scoreDisplay.textContent = currentScore;
 
-      // 显示得分提示
       if (answeredCount === 0) {
         showScoreToast('还没有作答任何题目哦，试试看！', false);
       } else if (answeredCount < questions.length) {
@@ -311,13 +306,13 @@
       if (toast) toast.remove();
     }
 
-    // ---------- AI助手（热情版，豆包风格）----------
+    // ---------- AI助手（公式已修正为 Δx = Δp × k / λ）----------
     const knowledge = {
-      intro: "本实验基于数字全息/数字图像相关法，测量微小位移。核心公式 Δx = Δp × k / M。Δx实际位移，Δp像素位移，k=3.45μm，M≈1。",
+      intro: "本实验基于数字全息技术，核心公式 Δx = Δp × k / λ。Δx实际位移，Δp像素位移，k=3.45μm，λ≈1是系统放大率。",
       setup: "装置从左到右：632.8nm氦氖激光器 → 偏振片 → f=15mm透镜 → f=29mm透镜 → 可变光阑 → 样品(手动平移台) → 面扫描相机(3.45μm像元)。",
-      steps: "步骤：1.搭建平行光路(透镜焦点重合)；2.拍背景图；3.拍初始图；4.平移样品；5.拍位移后图；6.计算像素位移Δp；7.代入公式得Δx。",
-      conclusions: "关键结论：放大率准确性决定精度；样品表面质量影响大；平均相对误差0.22%；量程0.15–1.05mm；扩展不确定度±0.015mm(k=2)。",
-      errors: "主要误差：机械回程差、环境振动、温度漂移、放大率标定不准、杂散光干扰。",
+      steps: "步骤：1.搭建平行光路(透镜焦点重合)；2.拍背景图；3.拍初始图；4.平移样品；5.拍位移后图；6.计算像素位移Δp；7.代入公式Δx=Δp×k/λ得实际位移。",
+      conclusions: "关键结论：放大率λ的准确性决定精度；样品表面质量影响大；平均相对误差0.22%；量程0.15–1.05mm；扩展不确定度±0.015mm(k=2)。",
+      errors: "主要误差：机械回程差、环境振动、温度漂移、放大率λ标定不准、杂散光干扰。",
       advantages: "创新优势：非接触全场测量；抗电磁干扰；不受离面位移/离焦影响；一次成像速度快。",
       applications: "典型应用：MEMS微器件检测、纳米材料形变、生物细胞运动、精密制造、芯片、航空航天。"
     };
@@ -327,13 +322,15 @@
       let answer = "";
       
       if (q.includes("公式") || q.includes("Δx") || q.includes("计算")) {
-        answer = `📐 核心公式是 Δx = Δp × k / M。其中Δx是实际位移，Δp是图像上看到的像素位移，k=3.45μm是像元尺寸，M≈1是系统放大率。简单说就是把像素移动数乘以3.45微米，就能得到真实移动距离啦！`;
+        answer = `📐 核心公式是 Δx = Δp × k / λ。其中Δx是实际位移，Δp是图像上看到的像素位移，k=3.45μm是像元尺寸，λ≈1是系统放大率。简单说就是把像素移动数乘以3.45微米，再除以放大率λ（通常约等于1），就能得到真实移动距离啦！`;
+      } else if (q.includes("λ") || q.includes("放大率") || q.includes("lambda")) {
+        answer = `🔍 λ 是系统放大率（几何放大率），公式为 λ = x₂/x₁，即样品到探测器的距离除以光源到样品的距离。在本实验中 λ ≈ 1。`;
       } else if (q.includes("装置") || q.includes("光路") || q.includes("元件") || q.includes("透镜")) {
         answer = `🔭 实验光路从左到右依次是：632.8nm氦氖激光器 → 偏振片 → 15mm凸透镜 → 29mm凸透镜 → 可变光阑 → 样品（固定在高精度手动平移台上）→ 面扫描相机。两片透镜组成扩束准直系统，焦点重合后产生平行光。`;
       } else if (q.includes("步骤") || q.includes("操作") || q.includes("流程")) {
-        answer = `⚙️ 实验步骤：第一步调整光路让两透镜焦点重合获得平行光；第二步拍背景图；第三步拍初始图；第四步平移样品；第五步拍位移后图；第六步计算像素位移Δp；第七步代入公式得到实际位移Δx。`;
+        answer = `⚙️ 实验步骤：第一步调整光路让两透镜焦点重合获得平行光；第二步拍背景图；第三步拍初始图；第四步平移样品；第五步拍位移后图；第六步计算像素位移Δp；第七步代入公式Δx=Δp×k/λ得到实际位移。`;
       } else if (q.includes("误差") || q.includes("不确定") || q.includes("精度")) {
-        answer = `⚠️ 主要误差来源包括：机械回程差、环境振动、温度漂移、放大率标定不准、杂散光干扰。系统的扩展不确定度为±0.015mm(k=2)，平均相对误差仅0.22%，精度还是很高的！`;
+        answer = `⚠️ 主要误差来源包括：机械回程差、环境振动、温度漂移、放大率λ标定不准、杂散光干扰。系统的扩展不确定度为±0.015mm(k=2)，平均相对误差仅0.22%，精度还是很高的！`;
       } else if (q.includes("优势") || q.includes("优点") || q.includes("创新")) {
         answer = `✨ 数字全息技术有很多优势：非接触测量不损伤样品；全场测量一次获得整个视场信息；抗电磁干扰适合复杂环境；不受离面位移影响避免离焦误差。而且纯光学方法，速度快！`;
       } else if (q.includes("应用") || q.includes("用途") || q.includes("领域")) {
@@ -343,10 +340,9 @@
       } else if (q.includes("波长") || q.includes("激光")) {
         answer = `🔴 使用的是632.8nm波长的氦氖激光器，发出纯净的红光，相干性好，是测量的理想光源。`;
       } else {
-        answer = `😊 我主要可以回答关于公式、光路装置、实验步骤、误差分析、技术优势和应用领域的问题。你可以试试问我“公式怎么理解”或者“有哪些误差来源”～ 当然，我也知道一些基础知识：${knowledge.intro}`;
+        answer = `😊 我主要可以回答关于公式Δx=Δp×k/λ、光路装置、实验步骤、误差分析、技术优势和应用领域的问题。你可以试试问我“公式怎么理解”或者“有哪些误差来源”～ 当然，我也知道一些基础知识：${knowledge.intro}`;
       }
       
-      // 豆包风格：加上热情结尾和追问
       const followUps = [
         "还有什么想了解的吗？我可以继续给你讲哦～",
         "需要我再详细解释某个部分吗？",
@@ -360,7 +356,6 @@
       return answer;
     }
 
-    // 聊天功能
     const toggleBtn = document.getElementById('aiToggleBtn');
     const panel = document.getElementById('aiChatPanel');
     const chatMessages = document.getElementById('chatMessages');
@@ -388,7 +383,6 @@
       questionInput.value = '';
     }
 
-    // 事件绑定
     renderQuestions();
     
     const submitBtn = document.getElementById('submitBtn');
